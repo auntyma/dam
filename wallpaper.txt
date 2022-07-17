@@ -1,0 +1,104 @@
+xml file
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="gravity"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="397dp"
+        android:layout_height="61dp"
+        android:text="Changing WallPaper Application"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#F60707"
+        android:textColorHighlight="#D11313"
+        android:textColorLink="#AA0606"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.221" />
+
+    <Button
+        android:id="@+id/btn_start_change_wallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click here to Change Wallpaper"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+java file
+
+package com.example.wallpaper;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.WallpaperManager;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener
+{
+    Button btnChangeWallpaper;
+    boolean running;
+    int[] imagesArray=new int[]
+            {
+                    R.drawable.img1,
+                    R.drawable.img2,
+                    R.drawable.img3,
+                    R.drawable.img4,
+                    R.drawable.img5
+            };
+    int i=0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btnChangeWallpaper=(Button)findViewById(R.id.btn_start_change_wallpaper);
+        btnChangeWallpaper.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View view)
+    {
+        if(!running)
+        {
+            new Timer().schedule (new MyTimer(),0,3000);
+            running=true;
+        }
+    }
+    class MyTimer extends TimerTask
+    {
+        public void run()
+        {
+            try
+            {
+                WallpaperManager wallpaperManager = WallpaperManager.getInstance(getBaseContext());
+                Random random=new Random();
+                wallpaperManager.setBitmap(BitmapFactory.decodeResource(getResources(),imagesArray[random.nextInt(5)]));
+                i++;
+            }
+            catch (Exception e){ }
+        }
+    }
+}
